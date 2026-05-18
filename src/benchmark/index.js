@@ -3,6 +3,30 @@ import { runBenchmark as runAgenticSeo } from "./agentic-seo.js";
 import { runCloudflare } from "./cloudflare.js";
 import { runFern } from "./fern.js";
 
+const REFERENCE_SCORES = {
+  agenticSeo: {
+    Stripe: 17,
+    Vercel: 48,
+    Supabase: 52,
+    Cloudflare: 55,
+    Average: 25,
+  },
+  cloudflare: {
+    Stripe: 2,
+    Vercel: 4,
+    Supabase: 3,
+    Cloudflare: 5,
+    Average: 2,
+  },
+  fern: {
+    Stripe: 85,
+    Vercel: 60,
+    Supabase: 78,
+    Anthropic: 72,
+    Average: 45,
+  },
+};
+
 export async function runAllBenchmarks(target) {
   const isUrl = target && target.startsWith("http");
 
@@ -12,13 +36,11 @@ export async function runAllBenchmarks(target) {
     isUrl ? runFern(target) : Promise.resolve(null),
   ]);
 
-  const benchmarks = {
+  return {
     agenticSeo: results[0].status === "fulfilled" ? results[0].value : null,
     cloudflare: results[1].status === "fulfilled" ? results[1].value : null,
     fern: results[2].status === "fulfilled" ? results[2].value : null,
   };
-
-  return benchmarks;
 }
 
 export function printBenchmarks(benchmarks) {
@@ -30,51 +52,43 @@ export function printBenchmarks(benchmarks) {
   );
 
   if (benchmarks.agenticSeo?.available) {
-    const b = benchmarks.agenticSeo;
-    printBenchmarkLine(
-      "agentic-seo",
-      b.score,
-      b.maxScore,
-      b.grade,
-      b.categories,
-    );
+    printBenchmarkBlock("agentic-seo", "agenticSeo", benchmarks.agenticSeo);
   }
-
   if (benchmarks.cloudflare?.available) {
-    const b = benchmarks.cloudflare;
-    printBenchmarkLine(
-      "Cloudflare",
-      b.score,
-      b.maxScore,
-      b.grade,
-      b.categories,
-    );
+    printBenchmarkBlock("Cloudflare", "cloudflare", benchmarks.cloudflare);
   }
-
   if (benchmarks.fern?.available) {
-    const b = benchmarks.fern;
-    printBenchmarkLine("Fern", b.score, b.maxScore, b.grade, b.categories);
+    printBenchmarkBlock("Fern", "fern", benchmarks.fern);
   }
-
-  console.log("");
 }
 
-function printBenchmarkLine(name, score, maxScore, grade, categories) {
-  const pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
-  const barWidth = 16;
-  const filled = Math.round((pct / 100) * barWidth);
+function printBenchmarkBlock(name, key, b) {
+  const pct = b.maxScore > 0 ? Math.round((b.score / b.maxScore) * 100) : 0;
   const color = pct >= 80 ? chalk.green : pct >= 50 ? chalk.yellow : chalk.red;
-  const bar =
-    color("█".repeat(filled)) + chalk.dim("░".repeat(barWidth - filled));
-  const gradeStr = grade ? chalk.dim(` (${grade})`) : "";
+  const barW = 16;
+  const filled = Math.round((pct / 100) * barW);
+  const bar = color("█".repeat(filled)) + chalk.dim("░".repeat(barW - filled));
 
   console.log(
-    `  ${bar} ${name.padEnd(16)} ${chalk.dim(`${score}/${maxScore}`)}${gradeStr}`,
+    `  ${bar} ${chalk.bold(name.padEnd(16))} ${chalk.dim(`${b.score}/${b.maxScore}`)}${b.grade ? chalk.dim(` (${b.grade})`) : ""}`,
   );
 
-  if (categories) {
-    for (const [, cat] of Object.entries(categories)) {
-      const catName = cat.name || cat;
+  if (b.checks && b.checks.length > 0) {
+    for (const check of b.checks) {
+      if (check.status === "pass") {
+        console.log(
+          chalk.green(`    + ${check.id}`) +
+            chalk.dim(check.message ? ` ${check.message.slice(0, 60)}` : ""),
+        );
+      } else if (check.status === "fail") {
+        console.log(
+          chalk.red(`    - ${check.id}`) +
+            chalk.dim(check.message ? ` ${check.message.slice(0, 60)}` : ""),
+        );
+      }
+    }
+  } else if (b.categories) {
+    for (const [, cat] of Object.entries(b.categories)) {
       const catPct =
         cat.percentage ??
         (cat.maxScore > 0 ? Math.round((cat.score / cat.maxScore) * 100) : 0);
@@ -86,9 +100,20 @@ function printBenchmarkLine(name, score, maxScore, grade, categories) {
             : chalk.red("✗");
       console.log(
         chalk.dim(
-          `    ${icon} ${(catName || "").padEnd(22)} ${cat.score}/${cat.maxScore}`,
+          `    ${icon} ${(cat.name || "").padEnd(22)} ${cat.score}/${cat.maxScore}`,
         ),
       );
     }
   }
+
+  const refs = REFERENCE_SCORES[key];
+  if (refs) {
+    const names = Object.entries(refs)
+      .sort((a, b) => b[1] - a[1])
+      .map(([n, s]) => `${n} ${s}`)
+      .join(chalk.dim(" · "));
+    console.log(chalk.dim(`    compare: ${names}`));
+  }
+
+  console.log("");
 }

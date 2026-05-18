@@ -38,6 +38,11 @@ export async function runFern(url) {
       maxScore,
       grade,
       categories,
+      checks: checks.map((c) => ({
+        id: c.id,
+        status: c.status,
+        message: c.message || "",
+      })),
       available: true,
     };
   } catch (err) {

@@ -40,21 +40,26 @@ export async function runCloudflare(url) {
       };
     }
 
-    const passCount = (content.match(/- PASS/g) || []).length;
-    const failCount = (content.match(/- FAIL/g) || []).length;
-    const total = passCount + failCount;
+    const checks = [];
+    const checkRegex =
+      /- (PASS|FAIL|OK) (\w+)(?:: (.+?))?(?:\n\s+(.+?))?(?=\n- |\n##|\n$)/g;
+    let cm;
+    while ((cm = checkRegex.exec(content)) !== null) {
+      checks.push({
+        status: cm[1].toLowerCase(),
+        id: cm[2],
+        message: cm[3] || "",
+      });
+    }
 
     return {
       score: level,
       maxScore: 5,
       grade: levelToGrade(level),
       level,
-      passCount,
-      failCount,
-      total,
+      checks,
       categories,
       available: true,
-      raw: content,
     };
   } catch (err) {
     return { available: false, reason: err.message?.slice(0, 100) };

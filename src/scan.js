@@ -263,6 +263,30 @@ function printReport(result) {
   if (benchmarks) {
     printBenchmarks(benchmarks);
   }
+
+  if (failed + partial > 0) {
+    console.log(chalk.bold("  Next steps:\n"));
+    const topFixes = allChecks
+      .filter((c) => !c.passed && c.fix)
+      .sort(
+        (a, b) =>
+          b.maxPoints - (b.points || 0) - (a.maxPoints - (a.points || 0)),
+      )
+      .slice(0, 3);
+    for (const fix of topFixes) {
+      console.log(chalk.dim(`    - ${fix.fix}`));
+    }
+    console.log(
+      chalk.dim(
+        `\n  Run ${chalk.bold("npx aeo-ready scan --fix")} to auto-fix what we can.`,
+      ),
+    );
+    console.log(
+      chalk.dim(
+        "  Open the dashboard for step-by-step guides on everything else.\n",
+      ),
+    );
+  }
 }
 
 function printScorecard(name, scorecard) {

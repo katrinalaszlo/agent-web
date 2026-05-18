@@ -20,7 +20,13 @@ program
 
 program
   .command("scan [url]")
-  .description("Run all AEO benchmarks against a URL")
+  .description(
+    "Run all AEO benchmarks against a URL (add --dir for local scanning)",
+  )
+  .option(
+    "-d, --dir <path>",
+    "Local directory to scan (gives agentic-seo full access)",
+  )
   .option("--json", "Output results as JSON")
   .option(
     "--threshold <number>",
@@ -32,10 +38,15 @@ program
       if (url && !url.startsWith("http")) url = `https://${url}`;
       if (!url) {
         console.error("  Usage: npx aeo-ready scan <url>");
+        console.error("         npx aeo-ready scan <url> --dir ./public");
         process.exit(1);
       }
 
-      const result = await scan({ url, json: opts.json || false });
+      const result = await scan({
+        url,
+        dir: opts.dir || null,
+        json: opts.json || false,
+      });
 
       if (opts.json) {
         process.stdout.write(JSON.stringify(result, null, 2) + "\n");

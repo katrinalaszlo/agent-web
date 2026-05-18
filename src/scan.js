@@ -5,7 +5,7 @@ import { generateDashboard } from "./dashboard/generate.js";
 import { exec } from "child_process";
 
 export async function scan(opts) {
-  const { url, json } = opts;
+  const { url, dir, json } = opts;
 
   if (!json) {
     console.log(
@@ -14,7 +14,7 @@ export async function scan(opts) {
     console.log(chalk.dim(`  Scanning ${url}...\n`));
   }
 
-  const benchmarks = await runAllBenchmarks(url);
+  const benchmarks = await runAllBenchmarks(url, dir);
   const scores = collectScores(benchmarks);
   const averageScore =
     scores.length > 0

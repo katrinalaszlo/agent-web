@@ -27,11 +27,11 @@ const REFERENCE_SCORES = {
   },
 };
 
-export async function runAllBenchmarks(target) {
+export async function runAllBenchmarks(target, dir) {
   const isUrl = target && target.startsWith("http");
 
   const results = await Promise.allSettled([
-    runAgenticSeo(target),
+    runAgenticSeo(dir || target),
     isUrl ? runCloudflare(target) : Promise.resolve(null),
     isUrl ? runFern(target) : Promise.resolve(null),
   ]);

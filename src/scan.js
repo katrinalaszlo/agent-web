@@ -79,6 +79,36 @@ function printReport(result) {
   console.log(
     `  Average across all sources: ${gc.bold(`${averageScore}/100`)}\n`,
   );
+
+  if (averageScore < 80) {
+    console.log(chalk.bold("  Fix it:\n"));
+    console.log(
+      chalk.dim("    npx agentic-seo init") +
+        "          scaffold llms.txt, AGENTS.md, skill.md",
+    );
+
+    const cfFails =
+      benchmarks.cloudflare?.checks?.filter((c) => c.status === "fail") || [];
+    for (const fail of cfFails.slice(0, 2)) {
+      console.log(
+        chalk.dim(`    Cloudflare: ${fail.id}`) +
+          chalk.dim(` — see isitagentready.com for fix`),
+      );
+    }
+
+    const fernFails =
+      benchmarks.fern?.checks?.filter(
+        (c) => c.status === "fail" || c.status === "warn",
+      ) || [];
+    if (fernFails.length > 0) {
+      console.log(
+        chalk.dim(`    Fern: ${fernFails.length} issues`) +
+          chalk.dim(` — run npx afdocs ${result.url}`),
+      );
+    }
+
+    console.log(chalk.dim("\n  Fix, then re-scan to track improvement.\n"));
+  }
 }
 
 function openInBrowser(filePath) {

@@ -44,7 +44,7 @@ function printSummary(before, after, applied, manual) {
   const beforeScore = before.score;
   const afterScore = after ? after.score : null;
 
-  console.log(chalk.bold("\n  agent-web --fix\n"));
+  console.log(chalk.bold("\n  aeo-ready --fix\n"));
 
   if (afterScore !== null) {
     const delta = afterScore - beforeScore;

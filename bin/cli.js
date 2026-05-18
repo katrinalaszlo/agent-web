@@ -20,8 +20,8 @@ const pkg = JSON.parse(
 const program = new Command();
 
 program
-  .name("agent-web")
-  .description("Audit your site for AI readiness. Two scorecards, one score.")
+  .name("aeo-ready")
+  .description("Is your site AEO ready? Two scorecards, one score.")
   .version(pkg.version);
 
 program

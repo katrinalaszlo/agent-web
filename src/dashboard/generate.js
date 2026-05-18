@@ -8,7 +8,7 @@ import { renderHistoryTable } from "./sections/history-table.js";
 import { renderTrendChart } from "./sections/trend-chart.js";
 import { renderRecommendations } from "./sections/recommendations.js";
 
-const DASHBOARD_DIR = ".agent-web";
+const DASHBOARD_DIR = ".aeo-ready";
 const DASHBOARD_FILE = "dashboard.html";
 
 export async function generateDashboard(scanResult, dir, opts = {}) {
@@ -60,7 +60,7 @@ function buildFullDashboard(sections, scanResult) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>agent-web — AI Readiness Dashboard</title>
+<title>aeo-ready — AI Readiness Dashboard</title>
 <style>
 ${CSS}
 </style>
@@ -68,7 +68,7 @@ ${CSS}
 <body>
 
 <nav>
-  <h2>agent-web</h2>
+  <h2>aeo-ready</h2>
   <a href="#overall" class="section-head">Overall Score</a>
   <a href="#agent-readiness" class="section-head">Agent Readiness</a>
   <a href="#ai-visibility" class="section-head">AI Visibility</a>

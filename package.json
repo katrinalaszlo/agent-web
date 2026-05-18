@@ -1,10 +1,10 @@
 {
-  "name": "agent-web",
+  "name": "aeo-ready",
   "version": "1.0.0",
-  "description": "Audit your site for AI readiness. Two scorecards: Agent Readiness + AI Visibility. One scan, one score.",
+  "description": "Is your site AEO ready? Two scorecards: Agent Readiness + AI Visibility. One scan, one score.",
   "type": "module",
   "bin": {
-    "agent-web": "./bin/cli.js"
+    "aeo-ready": "./bin/cli.js"
   },
   "main": "./src/index.js",
   "scripts": {

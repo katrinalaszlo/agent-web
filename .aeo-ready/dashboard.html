@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>aeo-ready — AI Readiness Dashboard</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; display: flex; }
+nav { position: fixed; top: 0; left: 0; width: 200px; height: 100vh; background: #010409; border-right: 1px solid #21262d; padding: 0; overflow-y: auto; z-index: 10; }
+nav h2 { color: #f0f6fc; font-size: 13px; letter-spacing: 0.02em; padding: 20px 16px 14px; border-bottom: 1px solid #21262d; margin: 0 0 8px; }
+nav a { display: block; padding: 6px 16px; font-size: 12px; color: #8b949e; text-decoration: none; transition: color 0.15s; }
+nav a:hover { color: #f0f6fc; }
+nav a.section-head { color: #c9d1d9; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 12px; }
+main { margin-left: 200px; padding: 32px 40px; max-width: 900px; width: 100%; }
+h1 { color: #f0f6fc; font-size: 24px; margin-bottom: 4px; }
+.subtitle { color: #8b949e; font-size: 13px; margin-bottom: 32px; }
+h2 { color: #f0f6fc; font-size: 18px; margin-top: 40px; margin-bottom: 16px; padding-top: 16px; border-top: 1px solid #21262d; }
+h3 { color: #f0f6fc; font-size: 14px; margin-top: 16px; margin-bottom: 8px; }
+.score-hero { text-align: center; padding: 32px 0; }
+.score-hero .grade { font-size: 64px; font-weight: 700; }
+.score-hero .number { font-size: 24px; color: #8b949e; margin-top: 4px; }
+.score-hero .bar { margin: 16px auto; width: 300px; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; }
+.score-hero .bar-fill { height: 100%; border-radius: 4px; }
+.grade-a { color: #3fb950; } .grade-b { color: #79c0ff; } .grade-c { color: #d29922; } .grade-d { color: #f85149; } .grade-f { color: #f85149; }
+.bar-a { background: #3fb950; } .bar-b { background: #79c0ff; } .bar-c { background: #d29922; } .bar-d { background: #f85149; } .bar-f { background: #f85149; }
+.scorecard { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 20px; margin: 16px 0; }
+.scorecard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.scorecard-header h3 { margin: 0; }
+.scorecard-header .pct { font-size: 20px; font-weight: 600; }
+.category { margin: 12px 0; padding: 8px 0; border-bottom: 1px solid #21262d; }
+.category:last-child { border-bottom: none; }
+.cat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.cat-name { font-size: 13px; font-weight: 500; flex: 1; }
+.cat-score { font-size: 12px; color: #8b949e; }
+.cat-bar { width: 120px; height: 4px; background: #21262d; border-radius: 2px; overflow: hidden; }
+.cat-bar-fill { height: 100%; border-radius: 2px; }
+.check { font-size: 12px; padding: 2px 0 2px 16px; color: #8b949e; }
+.check.pass { color: #3fb950; }
+.check.fail { color: #f85149; }
+.check .fix { display: block; color: #8b949e; font-size: 11px; padding-left: 16px; margin-top: 2px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+th, td { text-align: left; padding: 8px 12px; font-size: 12px; border-bottom: 1px solid #21262d; }
+th { color: #8b949e; font-weight: 600; }
+.trend { color: #3fb950; } .regression { color: #f85149; }
+.rec { background: #161b22; border: 1px solid #21262d; border-radius: 6px; padding: 12px 16px; margin: 8px 0; }
+.rec-title { font-size: 13px; font-weight: 500; color: #f0f6fc; }
+.rec-fix { font-size: 12px; color: #8b949e; margin-top: 4px; }
+.rec-impact { font-size: 11px; color: #d29922; margin-top: 4px; }
+svg { display: block; margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <h2>aeo-ready</h2>
+  <a href="#overall" class="section-head">Overall Score</a>
+  <a href="#agent-readiness" class="section-head">Agent Readiness</a>
+  <a href="#ai-visibility" class="section-head">AI Visibility</a>
+  <a href="#trends" class="section-head">Trends</a>
+  <a href="#history" class="section-head">History</a>
+  <a href="#recommendations" class="section-head">Recommendations</a>
+</nav>
+
+<main>
+
+<h1>AI Readiness Dashboard</h1>
+<p class="subtitle">/Users/katlaszlo/Desktop/Github-Wiki/GitHub/agent-web · Updated 2026-05-18</p>
+
+<!-- SECTION:overall-score -->
+<div class="score-hero" id="overall">
+  <div class="grade grade-c">C</div>
+  <div class="number">50 / 100</div>
+  <div class="bar"><div class="bar-fill bar-c" style="width:50%"></div></div>
+  <div style="display:flex;justify-content:center;gap:40px;margin-top:16px;font-size:13px;">
+    <span>Agent Readiness: <strong>22/50</strong></span>
+    <span>AI Visibility: <strong>28/50</strong></span>
+  </div>
+</div>
+<div style="text-align:center;padding:12px 24px;margin:16px auto;max-width:500px;background:#d2992210;border:1px solid #d2992233;border-radius:6px;font-size:13px;color:#d29922;">
+  <strong>Agent Readiness is low.</strong> AI engines can't cite what they can't read.<br>
+  <span style="color:#8b949e;">Fix the agent side first. Visibility follows.</span>
+</div>
+<div style="margin-top:24px;padding:20px;background:#161b22;border:1px solid #21262d;border-radius:8px;">
+  <div style="font-size:13px;font-weight:600;color:#f0f6fc;margin-bottom:12px;">How you compare</div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Cloudflare</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:55%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">55</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Supabase</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:52%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">52</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#f0f6fc;font-weight:600;">You</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:50%;height:100%;background:#d29922;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#f0f6fc;width:32px;text-align:right;font-weight:600;">50</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Vercel</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:48%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">48</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Anthropic Docs</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:43%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">43</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Stripe</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:33%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">33</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#8b949e;">Average site</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:25%;height:100%;background:#30363d;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">25</span>
+  </div>
+</div>
+<!-- /SECTION:overall-score -->
+
+<!-- SECTION:agent-readiness-scorecard -->
+<div class="scorecard" id="agent-readiness">
+  <div class="scorecard-header">
+    <h3>Agent Readiness</h3>
+    <span class="pct grade-c">22/50 (44%)</span>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Discovery</span>
+      <span class="cat-score">0/12</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:0%;background:#f85149"></div></div>
+    </div>
+    <div class="check fail">- llms.txt [0/4]<span class="fix">No llms.txt found. Create one describing what your site does for AI agents.</span></div>
+    <div class="check fail">- robots.txt AI crawlers [0/3]<span class="fix">No robots.txt found. Add one with explicit AI crawler rules.</span></div>
+    <div class="check fail">- sitemap.xml [0/2]<span class="fix">No sitemap.xml found.</span></div>
+    <div class="check fail">- AI-friendly meta tags [0/3]<span class="fix">No HTML available to check meta tags.</span></div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Content Structure</span>
+      <span class="cat-score">10/15</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:67%;background:#d29922"></div></div>
+    </div>
+    <div class="check pass">+ Markdown content available [3]</div>
+    <div class="check pass">+ Heading hierarchy [3]</div>
+    <div class="check pass">+ Token budget compliance [4]</div>
+    <div class="check fail">- Front-loading (first 500 tokens) [1/3]<span class="fix">Most pages don't answer what/why/how in first 500 tokens. Lead with the point.</span></div>
+    <div class="check fail">- Copy-for-AI affordances [0/2]<span class="fix">No copy-for-AI affordances. Add a &quot;Copy as Markdown&quot; button on doc pages.</span></div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Capability</span>
+      <span class="cat-score">4/13</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:31%;background:#f85149"></div></div>
+    </div>
+    <div class="check pass">+ AGENTS.md / CLAUDE.md [4]</div>
+    <div class="check fail">- agents.json manifest [0/3]<span class="fix">No agents.json or .well-known/agent.json found.</span></div>
+    <div class="check fail">- OpenAPI spec [0/3]<span class="fix">No OpenAPI spec found. Add openapi.json or openapi.yaml.</span></div>
+    <div class="check fail">- Content negotiation [0/3]<span class="fix">No content negotiation setup. Consider serving markdown for Accept: text/markdown requests.</span></div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Actionable</span>
+      <span class="cat-score">8/10</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:80%;background:#3fb950"></div></div>
+    </div>
+    <div class="check pass">+ Machine-readable contact [3]</div>
+    <div class="check pass">+ Programmatic pricing [3]</div>
+    <div class="check fail">- API endpoint [1/2]<span class="fix">API references found but no formal spec. Add OpenAPI spec.</span></div>
+    <div class="check pass">+ SDK / integration manifest [2]</div>
+  </div>
+</div>
+<!-- /SECTION:agent-readiness-scorecard -->
+
+<!-- SECTION:ai-visibility-scorecard -->
+<div class="scorecard" id="ai-visibility">
+  <div class="scorecard-header">
+    <h3>AI Visibility</h3>
+    <span class="pct grade-c">28/50 (56%)</span>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Structured Data</span>
+      <span class="cat-score">6/12</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:50%;background:#d29922"></div></div>
+    </div>
+    <div class="check fail">- Schema.org markup [2/4]<span class="fix">Schema.org present but: type doesn't match site category, missing required fields.</span></div>
+    <div class="check pass">+ FAQ markup [3]</div>
+    <div class="check pass">+ Rich schemas (Breadcrumb/HowTo/Product) [3]</div>
+    <div class="check fail">- Open Graph + meta description [0/2]<span class="fix">No Open Graph or meta description tags. AI systems use these for page summaries.</span></div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Citation Readiness</span>
+      <span class="cat-score">4/15</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:27%;background:#f85149"></div></div>
+    </div>
+    <div class="check fail">- Direct answer formatting [1/4]<span class="fix">Most pages don't lead with a concise summary (40-60 words). This is what AI systems cite.</span></div>
+    <div class="check fail">- Question-based headings [1/4]<span class="fix">Very few question-based headings. Rephrase key H2/H3s as questions users would ask AI.</span></div>
+    <div class="check pass">+ Citation-friendly structure [4]</div>
+    <div class="check fail">- Definitive statements [2/3]<span class="fix">Some definitive statements but too much hedging. AI cites confident claims over uncertain ones.</span></div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Authority</span>
+      <span class="cat-score">10/13</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:77%;background:#d29922"></div></div>
+    </div>
+    <div class="check pass">+ E-E-A-T signals [4]</div>
+    <div class="check pass">+ Entity optimization [3]</div>
+    <div class="check pass">+ External validation & references [3]</div>
+  </div>
+  <div class="category">
+    <div class="cat-header">
+      <span class="cat-name">Freshness</span>
+      <span class="cat-score">8/10</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:80%;background:#3fb950"></div></div>
+    </div>
+    <div class="check pass">+ Last modified dates [3]</div>
+    <div class="check fail">- Publication cadence [0/2]<span class="fix">Infrequent updates (~541 day gaps). Regular publishing signals authority to AI systems.</span></div>
+    <div class="check pass">+ Content recency [3]</div>
+    <div class="check pass">+ Evergreen content flagged [2]</div>
+  </div>
+</div>
+<!-- /SECTION:ai-visibility-scorecard -->
+
+<!-- SECTION:trend-chart -->
+<h2 id="trends">Score Trends</h2>
+<svg width="700" height="200" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="170" x2="680" y2="170" stroke="#21262d" stroke-width="1"/>
+<text x="32" y="174" text-anchor="end" fill="#8b949e" font-size="10">0</text>
+<line x1="40" y1="132.5" x2="680" y2="132.5" stroke="#21262d" stroke-width="1"/>
+<text x="32" y="136.5" text-anchor="end" fill="#8b949e" font-size="10">25</text>
+<line x1="40" y1="95" x2="680" y2="95" stroke="#21262d" stroke-width="1"/>
+<text x="32" y="99" text-anchor="end" fill="#8b949e" font-size="10">50</text>
+<line x1="40" y1="57.5" x2="680" y2="57.5" stroke="#21262d" stroke-width="1"/>
+<text x="32" y="61.5" text-anchor="end" fill="#8b949e" font-size="10">75</text>
+<line x1="40" y1="20" x2="680" y2="20" stroke="#21262d" stroke-width="1"/>
+<text x="32" y="24" text-anchor="end" fill="#8b949e" font-size="10">100</text>
+<text x="40" y="195" text-anchor="middle" fill="#8b949e" font-size="10">05-18</text>
+<text x="680" y="195" text-anchor="middle" fill="#8b949e" font-size="10">05-18</text>
+<path d="M 40.0 80.0 L 680.0 104.0" fill="none" stroke="#79c0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0 89.0 L 680.0 86.0" fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0 84.5 L 680.0 95.0" fill="none" stroke="#f0f6fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="40.0" cy="84.5" r="3" fill="#f0f6fc"/>
+<circle cx="680.0" cy="95.0" r="3" fill="#f0f6fc"/>
+<text x="680" y="15" text-anchor="end" fill="#f0f6fc" font-size="10">Overall</text>
+<text x="600" y="15" text-anchor="end" fill="#79c0ff" font-size="10">Agent (x2)</text>
+<text x="500" y="15" text-anchor="end" fill="#d29922" font-size="10">Visibility (x2)</text>
+</svg>
+<!-- /SECTION:trend-chart -->
+
+<!-- SECTION:history-table -->
+<h2 id="history">Scan History</h2>
+<table>
+<tr><th>Date</th><th>Score</th><th>Grade</th><th>Agent</th><th>Visibility</th><th>Delta</th></tr>
+<tr>
+  <td>2026-05-18</td>
+  <td>50/100</td>
+  <td class="grade-c">C</td>
+  <td>22/50</td>
+  <td>28/50</td>
+  <td><span class="regression">-7</span></td>
+</tr>
+<tr>
+  <td>2026-05-18</td>
+  <td>57/100</td>
+  <td class="grade-c">C</td>
+  <td>30/50</td>
+  <td>27/50</td>
+  <td><span style="color:#8b949e">—</span></td>
+</tr>
+</table>
+<!-- /SECTION:history-table -->
+
+<!-- SECTION:recommendations -->
+<h2 id="recommendations">Top Recommendations</h2>
+<p style="color:#8b949e;font-size:12px;margin-bottom:12px;">Sorted by point impact — fix these first.</p>
+<div class="rec">
+  <div class="rec-title">llms.txt</div>
+  <div class="rec-fix">No llms.txt found. Create one describing what your site does for AI agents.</div>
+  <div class="rec-impact">+4 points · Discovery</div>
+</div>
+<div class="rec">
+  <div class="rec-title">robots.txt AI crawlers</div>
+  <div class="rec-fix">No robots.txt found. Add one with explicit AI crawler rules.</div>
+  <div class="rec-impact">+3 points · Discovery</div>
+</div>
+<div class="rec">
+  <div class="rec-title">AI-friendly meta tags</div>
+  <div class="rec-fix">No HTML available to check meta tags.</div>
+  <div class="rec-impact">+3 points · Discovery</div>
+</div>
+<div class="rec">
+  <div class="rec-title">agents.json manifest</div>
+  <div class="rec-fix">No agents.json or .well-known/agent.json found.</div>
+  <div class="rec-impact">+3 points · Capability</div>
+</div>
+<div class="rec">
+  <div class="rec-title">OpenAPI spec</div>
+  <div class="rec-fix">No OpenAPI spec found. Add openapi.json or openapi.yaml.</div>
+  <div class="rec-impact">+3 points · Capability</div>
+</div>
+<div class="rec">
+  <div class="rec-title">Content negotiation</div>
+  <div class="rec-fix">No content negotiation setup. Consider serving markdown for Accept: text/markdown requests.</div>
+  <div class="rec-impact">+3 points · Capability</div>
+</div>
+<div class="rec">
+  <div class="rec-title">Direct answer formatting</div>
+  <div class="rec-fix">Most pages don't lead with a concise summary (40-60 words). This is what AI systems cite.</div>
+  <div class="rec-impact">+3 points · Citation Readiness</div>
+</div>
+<div class="rec">
+  <div class="rec-title">Question-based headings</div>
+  <div class="rec-fix">Very few question-based headings. Rephrase key H2/H3s as questions users would ask AI.</div>
+  <div class="rec-impact">+3 points · Citation Readiness</div>
+</div>
+<!-- /SECTION:recommendations -->
+
+</main>
+</body>
+</html>

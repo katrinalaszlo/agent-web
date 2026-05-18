@@ -22,7 +22,7 @@ export async function scan(opts) {
 
   if (!json) {
     console.log(
-      chalk.bold("\n  agent-web") + chalk.dim(" — AI readiness audit\n"),
+      chalk.bold("\n  aeo-ready") + chalk.dim(" — AI readiness audit\n"),
     );
   }
 
@@ -134,7 +134,7 @@ function listFiles(dir) {
     ".venv",
     "__pycache__",
     "target",
-    ".agent-web",
+    ".aeo-ready",
   ]);
   const results = [];
 

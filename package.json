@@ -1,6 +1,6 @@
 {
   "name": "aeo-ready",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Is your site AEO ready? Two scorecards: Agent Readiness + AI Visibility. One scan, one score.",
   "type": "module",
   "bin": {

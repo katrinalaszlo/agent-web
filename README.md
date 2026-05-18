@@ -1,115 +1,77 @@
-# agent-web
+# aeo-ready
 
-Is your site AI-ready? One scan, two scorecards, one score.
-
-```bash
-npx agent-web scan --url https://your-site.com
-```
-
-## What it measures
-
-**Agent Readiness** (0-50) — Can AI agents discover, parse, and act on your site?
-- Discovery: llms.txt, robots.txt AI crawlers, sitemap, meta tags
-- Content Structure: markdown availability, heading hierarchy, token budgets, front-loading
-- Capability Signaling: AGENTS.md, agents.json, OpenAPI, content negotiation
-- Actionable: machine-readable contact, pricing, API endpoints, SDK manifest
-
-**AI Visibility** (0-50) — Does your content get cited in AI-generated responses?
-- Structured Data: schema.org, FAQ markup, rich schemas, Open Graph
-- Citation Readiness: direct answer formatting, question headings, citable structure
-- Authority: E-E-A-T signals, entity optimization, external validation
-- Freshness: modification dates, publication cadence, content recency
-
-**Overall: X/100** with letter grade (A-F).
-
-## Usage
+AEO benchmark aggregator. One scan, every score.
 
 ```bash
-# Audit a live URL
-npx agent-web scan --url https://example.com
-
-# Audit current directory (repo mode)
-npx agent-web scan
-
-# JSON output for CI pipelines
-npx agent-web scan --json --threshold 60
-
-# Skip benchmark comparison
-npx agent-web scan --no-benchmark
+npx aeo-ready scan yoursite.com
 ```
+
+## What it does
+
+Runs every major AEO (Agentic Engine Optimization) benchmark against your URL in one command. Shows per-check results, company comparisons, and tracks scores over time.
+
+## Sources
+
+| Benchmark | What it checks | Checks |
+|-----------|---------------|--------|
+| **agentic-seo** (Addy Osmani) | Discovery, content structure, token economics, capability signaling, UX bridge | 10 |
+| **Cloudflare** (isitagentready.com) | Discoverability, content accessibility, bot access, API/auth/MCP/A2A discovery, commerce | 19 |
+| **Fern** (afdocs) | llms.txt quality, markdown availability, page size, content structure, URL stability, auth | 23 |
 
 ## Output
 
 ```
-  agent-web — AI readiness audit
+  aeo-ready — AEO benchmark aggregator
 
-  Mode: url | Type: saas
+  ─── Benchmarks ────────────────────────────────────
 
-  Overall: C 50/100
+  ████░░░░░░░░░░░░ agentic-seo      23/100 (F)
+    + llms.txt, - content structure, - token economics...
+    compare: Cloudflare 55 · Supabase 52 · Vercel 48
 
-  Agent Readiness: 22/50
-    discovery: 3/12
-      + AI-friendly meta tags [3]
-      - llms.txt [0/4]
-        fix: No llms.txt found.
-      - robots.txt AI crawlers [0/3]
-        fix: robots.txt exists but doesn't mention AI crawlers.
+  ████████████████ Cloudflare       5/5 (A)
+    + robotsTxt, + sitemap, + linkHeaders, + agentSkills...
+    compare: Cloudflare 5 · Vercel 4 · Supabase 3
 
-  AI Visibility: 28/50
-    structured Data: 6/12
-      + FAQ markup [3]
-      + Rich schemas [3]
-      - Schema.org markup [0/4]
-        fix: type doesn't match site category.
+  ████████████░░░░ Fern             72/100 (C)
+    + llms-txt-exists, - content-negotiation, - llms-txt-coverage...
+    compare: Stripe 85 · Supabase 78 · Anthropic 72
 
-  Second opinion: agentic-seo scored you 45/100
+  Average across all sources: 45/100
+
+  Fix it:
+    npx agentic-seo init          scaffold llms.txt, AGENTS.md
+    Fern: 10 issues — run npx afdocs https://yoursite.com
+```
+
+## Usage
+
+```bash
+npx aeo-ready scan yoursite.com           # scan a URL
+npx aeo-ready scan yoursite.com --json    # JSON output for CI
+npx aeo-ready scan yoursite.com --threshold 60  # exit 1 if below
 ```
 
 ## CI Mode
 
-Exit with code 1 if below threshold:
-
-```bash
-npx agent-web scan --json --threshold 60
-```
-
-Add to GitHub Actions:
-
 ```yaml
-- run: npx agent-web scan --threshold 50
+- run: npx aeo-ready scan yoursite.com --threshold 50
 ```
 
-## Benchmark
+## Dashboard
 
-Runs `npx agentic-seo --json` as an independent second opinion. Shows their score alongside yours. If agentic-seo isn't installed, the benchmark line is skipped gracefully.
+Each scan generates a self-contained HTML dashboard at `.aeo-ready/dashboard.html` with:
+- Score cards for each benchmark
+- Per-check detail (expandable)
+- Company comparisons
+- Score trends over time (inline SVG)
+- Scan history with deltas
+
+Auto-opens in browser after each scan.
 
 ## History
 
-Each scan saves to `.agent-web/history.json`. Gitignored by default.
-
-## Site Type Detection
-
-Automatically infers site type from signals:
-- **SaaS** — pricing + auth pages detected
-- **API/Developer Tool** — /docs, /api, SDK references
-- **Content/Blog** — articles, blog posts, publication cadence
-- **Personal/Portfolio** — portfolio, about me, single person
-
-Scoring adjusts by type (e.g., OpenAPI is required for SaaS, N/A for personal sites).
-
-## Coming Soon
-
-- `--fix` mode: generate missing files (robots.txt, meta tags, structured data)
-- HTML dashboard with score trends over time
-- Citation correlation: query AI models and track whether fixes improve citations
-
-## Also available as a Claude Code skill
-
-```bash
-npx skills add katrinalaszlo/agent-web
-```
-
-Then use `/agent-web` or `/agent-web https://example.com` inside Claude Code for an interactive audit that also generates missing files.
+Scores persist in `.aeo-ready/history.json`. Re-scan to track improvement over time.
 
 ## Author
 

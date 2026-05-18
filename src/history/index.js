@@ -20,7 +20,11 @@ export async function saveResult(result, baseDir) {
     target: result.target,
     agentReadiness: result.agentReadiness.score,
     aiVisibility: result.aiVisibility.score,
-    benchmark: result.benchmark?.score ?? null,
+    benchmarks: {
+      agenticSeo: result.benchmarks?.agenticSeo?.score ?? null,
+      cloudflare: result.benchmarks?.cloudflare?.score ?? null,
+      fern: result.benchmarks?.fern?.score ?? null,
+    },
   });
 
   writeFileSync(historyPath, JSON.stringify(history, null, 2));

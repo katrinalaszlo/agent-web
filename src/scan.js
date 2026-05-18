@@ -9,7 +9,7 @@ import { runStructuredDataChecks } from "./checks/ai-visibility/structured-data.
 import { runCitationReadinessChecks } from "./checks/ai-visibility/citation-readiness.js";
 import { runAuthorityChecks } from "./checks/ai-visibility/authority.js";
 import { runFreshnessChecks } from "./checks/ai-visibility/freshness.js";
-import { runBenchmark } from "./benchmark/agentic-seo.js";
+import { runAllBenchmarks, printBenchmarks } from "./benchmark/index.js";
 import { saveResult } from "./history/index.js";
 import { generateDashboard } from "./dashboard/generate.js";
 import { readdirSync, readFileSync, existsSync } from "fs";
@@ -40,7 +40,7 @@ export async function scan(opts) {
 
   let benchmarkResult = null;
   if (benchmark) {
-    benchmarkResult = await runBenchmark(mode === "url" ? url : dir);
+    benchmarkResult = await runAllBenchmarks(mode === "url" ? url : dir);
   }
 
   const result = {
@@ -52,7 +52,7 @@ export async function scan(opts) {
     timestamp: new Date().toISOString(),
     agentReadiness,
     aiVisibility,
-    benchmark: benchmarkResult,
+    benchmarks: benchmarkResult,
   };
 
   if (!json) {
@@ -207,7 +207,7 @@ function scoreToGrade(score) {
 }
 
 function printReport(result) {
-  const { score, grade, agentReadiness, aiVisibility, benchmark } = result;
+  const { score, grade, agentReadiness, aiVisibility, benchmarks } = result;
 
   const gradeColor =
     grade === "A"
@@ -260,8 +260,8 @@ function printReport(result) {
     ),
   );
 
-  if (benchmark && benchmark.available) {
-    printBenchmark(benchmark);
+  if (benchmarks) {
+    printBenchmarks(benchmarks);
   }
 }
 
@@ -304,32 +304,6 @@ function printScorecard(name, scorecard) {
     }
   }
   console.log("");
-}
-
-function printBenchmark(benchmark) {
-  console.log(
-    chalk.dim("  ─── Second opinion: agentic-seo ───────────────────\n"),
-  );
-  console.log(
-    `  ${bar(benchmark.score, benchmark.maxScore, 20)} ${chalk.dim(`${benchmark.score}/${benchmark.maxScore}`)}${benchmark.grade ? chalk.dim(` (${benchmark.grade})`) : ""}\n`,
-  );
-
-  if (benchmark.categories) {
-    for (const [, cat] of Object.entries(benchmark.categories)) {
-      const pct =
-        cat.percentage ?? Math.round((cat.score / cat.maxScore) * 100);
-      const icon =
-        pct >= 80
-          ? chalk.green("✓")
-          : pct >= 40
-            ? chalk.yellow("◑")
-            : chalk.red("✗");
-      console.log(
-        `  ${icon} ${cat.name.padEnd(24)} ${bar(cat.score, cat.maxScore, 16)} ${chalk.dim(`${cat.score}/${cat.maxScore} (${pct}%)`)}`,
-      );
-    }
-    console.log("");
-  }
 }
 
 function bar(value, max, width) {

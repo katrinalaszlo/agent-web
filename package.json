@@ -1,7 +1,7 @@
 {
   "name": "aeo-ready",
-  "version": "1.1.0",
-  "description": "Is your site AEO ready? Two scorecards: Agent Readiness + AI Visibility. One scan, one score.",
+  "version": "1.2.0",
+  "description": "AEO benchmark aggregator. One scan, every score. Collects agentic-seo, Cloudflare, and Fern in one report.",
   "type": "module",
   "bin": {
     "aeo-ready": "./bin/cli.js"

@@ -1,0 +1,35 @@
+{
+  "name": "agent-web",
+  "version": "1.0.0",
+  "description": "Audit your site for AI readiness. Two scorecards: Agent Readiness + AI Visibility. One scan, one score.",
+  "type": "module",
+  "bin": {
+    "agent-web": "./bin/cli.js"
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node bin/cli.js",
+    "test": "node --test src/**/*.test.js"
+  },
+  "keywords": [
+    "aeo",
+    "ai",
+    "agent",
+    "seo",
+    "llms-txt",
+    "agents-json",
+    "ai-visibility",
+    "agent-readiness",
+    "structured-data",
+    "schema-org"
+  ],
+  "author": "Kat Laszlo <kat@tansohq.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0"
+  }
+}

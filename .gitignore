@@ -1,0 +1,8 @@
+node_modules/
+.agent-web/
+*.tgz
+
+# Internal planning docs (not for public repo)
+task_plan.md
+findings.md
+progress.md

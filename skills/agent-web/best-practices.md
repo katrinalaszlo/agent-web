@@ -39,7 +39,7 @@
 - **Hire/book**: If you're available for work, make it explicit and structured. Rate, availability, engagement types.
 - **Content**: If you write/speak, include topics you cover. Agents recommending speakers/writers need this.
 
-### Gold standard: katrinalaszlo.com (your own site)
+### Gold standard: brianjackson.io, cassidoo.co
 
 ---
 

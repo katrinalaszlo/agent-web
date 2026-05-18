@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
-const DIR_NAME = ".agent-web";
+const DIR_NAME = ".aeo-ready";
 const HISTORY_FILE = "history.json";
 
 export async function saveResult(result, baseDir) {
@@ -14,17 +14,12 @@ export async function saveResult(result, baseDir) {
   history.scans.push({
     id: generateId(),
     timestamp: result.timestamp,
-    score: result.score,
-    grade: result.grade,
-    siteType: result.siteType,
-    target: result.target,
-    agentReadiness: result.agentReadiness.score,
-    aiVisibility: result.aiVisibility.score,
-    benchmarks: {
-      agenticSeo: result.benchmarks?.agenticSeo?.score ?? null,
-      cloudflare: result.benchmarks?.cloudflare?.score ?? null,
-      fern: result.benchmarks?.fern?.score ?? null,
-    },
+    url: result.url,
+    averageScore: result.averageScore,
+    agenticSeo: result.benchmarks?.agenticSeo?.score ?? null,
+    cloudflare: result.benchmarks?.cloudflare?.score ?? null,
+    cloudflareMax: result.benchmarks?.cloudflare?.maxScore ?? null,
+    fern: result.benchmarks?.fern?.score ?? null,
   });
 
   writeFileSync(historyPath, JSON.stringify(history, null, 2));
@@ -34,9 +29,7 @@ export function loadHistory(historyPath) {
   if (existsSync(historyPath)) {
     try {
       return JSON.parse(readFileSync(historyPath, "utf8"));
-    } catch {
-      /* corrupted — start fresh */
-    }
+    } catch {}
   }
   return { scans: [] };
 }

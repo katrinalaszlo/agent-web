@@ -6,54 +6,42 @@ export function renderTrendChart(history) {
   const scans = history.scans.slice(-20);
   const width = 700;
   const height = 200;
-  const padding = { top: 20, right: 20, bottom: 30, left: 40 };
-  const chartW = width - padding.left - padding.right;
-  const chartH = height - padding.top - padding.bottom;
-
-  const maxScore = 100;
+  const pad = { top: 20, right: 20, bottom: 30, left: 40 };
+  const chartW = width - pad.left - pad.right;
+  const chartH = height - pad.top - pad.bottom;
   const xStep = scans.length > 1 ? chartW / (scans.length - 1) : chartW;
 
-  function toPoint(index, value) {
-    const x = padding.left + index * xStep;
-    const y = padding.top + chartH - (value / maxScore) * chartH;
-    return { x, y };
+  function toY(value) {
+    return pad.top + chartH - (value / 100) * chartH;
   }
 
   function polyline(values, color) {
-    const points = values.map((v, i) => toPoint(i, v));
-    const d = points
-      .map(
-        (p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`,
-      )
-      .join(" ");
-    return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const pts = values.map(
+      (v, i) =>
+        `${i === 0 ? "M" : "L"} ${(pad.left + i * xStep).toFixed(1)} ${toY(v ?? 0).toFixed(1)}`,
+    );
+    return `<path d="${pts.join(" ")}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
   }
 
-  function dots(values, color) {
-    return values
-      .map((v, i) => {
-        const p = toPoint(i, v);
-        return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="${color}"/>`;
-      })
-      .join("\n");
-  }
+  const agenticSeo = scans.map((s) => s.agenticSeo ?? 0);
+  const cloudflare = scans.map((s) =>
+    s.cloudflare != null && s.cloudflareMax
+      ? Math.round((s.cloudflare / s.cloudflareMax) * 100)
+      : 0,
+  );
+  const fern = scans.map((s) => s.fern ?? 0);
 
-  const overall = scans.map((s) => s.score);
-  const agent = scans.map((s) => (s.agentReadiness ?? 0) * 2);
-  const vis = scans.map((s) => (s.aiVisibility ?? 0) * 2);
-
-  const gridLines = [0, 25, 50, 75, 100]
+  const grid = [0, 25, 50, 75, 100]
     .map((v) => {
-      const y = padding.top + chartH - (v / maxScore) * chartH;
-      return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#21262d" stroke-width="1"/>
-<text x="${padding.left - 8}" y="${y + 4}" text-anchor="end" fill="#8b949e" font-size="10">${v}</text>`;
+      const y = toY(v);
+      return `<line x1="${pad.left}" y1="${y}" x2="${width - pad.right}" y2="${y}" stroke="#21262d"/><text x="${pad.left - 8}" y="${y + 4}" text-anchor="end" fill="#8b949e" font-size="10">${v}</text>`;
     })
     .join("\n");
 
-  const xLabels = scans
+  const labels = scans
     .map((s, i) => {
       if (scans.length <= 10 || i % Math.ceil(scans.length / 8) === 0) {
-        const x = padding.left + i * xStep;
+        const x = pad.left + i * xStep;
         const label = s.timestamp ? s.timestamp.slice(5, 10) : "";
         return `<text x="${x}" y="${height - 5}" text-anchor="middle" fill="#8b949e" font-size="10">${label}</text>`;
       }
@@ -61,18 +49,15 @@ export function renderTrendChart(history) {
     })
     .join("\n");
 
-  const svg = `<h2 id="trends">Score Trends</h2>
+  return `<h2 id="trends">Score Trends</h2>
 <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-${gridLines}
-${xLabels}
-${polyline(agent, "#79c0ff")}
-${polyline(vis, "#d29922")}
-${polyline(overall, "#f0f6fc")}
-${dots(overall, "#f0f6fc")}
-<text x="${width - padding.right}" y="${padding.top - 5}" text-anchor="end" fill="#f0f6fc" font-size="10">Overall</text>
-<text x="${width - padding.right - 80}" y="${padding.top - 5}" text-anchor="end" fill="#79c0ff" font-size="10">Agent (x2)</text>
-<text x="${width - padding.right - 180}" y="${padding.top - 5}" text-anchor="end" fill="#d29922" font-size="10">Visibility (x2)</text>
+${grid}
+${labels}
+${polyline(agenticSeo, "#f85149")}
+${polyline(cloudflare, "#3fb950")}
+${polyline(fern, "#79c0ff")}
+<text x="${width - pad.right}" y="${pad.top - 5}" text-anchor="end" fill="#f85149" font-size="10">agentic-seo</text>
+<text x="${width - pad.right - 90}" y="${pad.top - 5}" text-anchor="end" fill="#3fb950" font-size="10">Cloudflare</text>
+<text x="${width - pad.right - 170}" y="${pad.top - 5}" text-anchor="end" fill="#79c0ff" font-size="10">Fern</text>
 </svg>`;
-
-  return svg;
 }

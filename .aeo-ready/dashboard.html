@@ -64,24 +64,28 @@ svg { display: block; margin: 16px 0; }
 <main>
 
 <h1>AI Readiness Dashboard</h1>
-<p class="subtitle">/Users/katlaszlo/Desktop/Github-Wiki/GitHub/agent-web · Updated 2026-05-18</p>
+<p class="subtitle">https://tansohq.com · Updated 2026-05-18</p>
 
 <!-- SECTION:overall-score -->
 <div class="score-hero" id="overall">
   <div class="grade grade-c">C</div>
-  <div class="number">50 / 100</div>
-  <div class="bar"><div class="bar-fill bar-c" style="width:50%"></div></div>
+  <div class="number">57 / 100</div>
+  <div class="bar"><div class="bar-fill bar-c" style="width:57%"></div></div>
   <div style="display:flex;justify-content:center;gap:40px;margin-top:16px;font-size:13px;">
-    <span>Agent Readiness: <strong>22/50</strong></span>
-    <span>AI Visibility: <strong>28/50</strong></span>
+    <span>Agent Readiness: <strong>30/50</strong></span>
+    <span>AI Visibility: <strong>27/50</strong></span>
   </div>
 </div>
-<div style="text-align:center;padding:12px 24px;margin:16px auto;max-width:500px;background:#d2992210;border:1px solid #d2992233;border-radius:6px;font-size:13px;color:#d29922;">
-  <strong>Agent Readiness is low.</strong> AI engines can't cite what they can't read.<br>
-  <span style="color:#8b949e;">Fix the agent side first. Visibility follows.</span>
-</div>
+
 <div style="margin-top:24px;padding:20px;background:#161b22;border:1px solid #21262d;border-radius:8px;">
   <div style="font-size:13px;font-weight:600;color:#f0f6fc;margin-bottom:12px;">How you compare</div>
+  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+    <span style="width:120px;font-size:12px;color:#f0f6fc;font-weight:600;">You</span>
+    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
+      <div style="width:57%;height:100%;background:#d29922;border-radius:2px;"></div>
+    </div>
+    <span style="font-size:11px;color:#f0f6fc;width:32px;text-align:right;font-weight:600;">57</span>
+  </div>
   <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
     <span style="width:120px;font-size:12px;color:#8b949e;">Cloudflare</span>
     <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
@@ -95,13 +99,6 @@ svg { display: block; margin: 16px 0; }
       <div style="width:52%;height:100%;background:#30363d;border-radius:2px;"></div>
     </div>
     <span style="font-size:11px;color:#8b949e;width:32px;text-align:right;">52</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
-    <span style="width:120px;font-size:12px;color:#f0f6fc;font-weight:600;">You</span>
-    <div style="flex:1;height:4px;background:#21262d;border-radius:2px;overflow:hidden;">
-      <div style="width:50%;height:100%;background:#d29922;border-radius:2px;"></div>
-    </div>
-    <span style="font-size:11px;color:#f0f6fc;width:32px;text-align:right;font-weight:600;">50</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px;margin:6px 0;">
     <span style="width:120px;font-size:12px;color:#8b949e;">Vercel</span>
@@ -138,18 +135,18 @@ svg { display: block; margin: 16px 0; }
 <div class="scorecard" id="agent-readiness">
   <div class="scorecard-header">
     <h3>Agent Readiness</h3>
-    <span class="pct grade-c">22/50 (44%)</span>
+    <span class="pct grade-b">30/50 (60%)</span>
   </div>
   <div class="category">
     <div class="cat-header">
       <span class="cat-name">Discovery</span>
-      <span class="cat-score">0/12</span>
-      <div class="cat-bar"><div class="cat-bar-fill" style="width:0%;background:#f85149"></div></div>
+      <span class="cat-score">9/12</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:75%;background:#d29922"></div></div>
     </div>
-    <div class="check fail">- llms.txt [0/4]<span class="fix">No llms.txt found. Create one describing what your site does for AI agents.</span></div>
-    <div class="check fail">- robots.txt AI crawlers [0/3]<span class="fix">No robots.txt found. Add one with explicit AI crawler rules.</span></div>
-    <div class="check fail">- sitemap.xml [0/2]<span class="fix">No sitemap.xml found.</span></div>
-    <div class="check fail">- AI-friendly meta tags [0/3]<span class="fix">No HTML available to check meta tags.</span></div>
+    <div class="check pass">+ llms.txt [4]</div>
+    <div class="check fail">- robots.txt AI crawlers [1/3]<span class="fix">Only 4/9 AI crawlers explicitly allowed.</span></div>
+    <div class="check pass">+ sitemap.xml [2]</div>
+    <div class="check pass">+ AI-friendly meta tags [3]</div>
   </div>
   <div class="category">
     <div class="cat-header">
@@ -166,13 +163,13 @@ svg { display: block; margin: 16px 0; }
   <div class="category">
     <div class="cat-header">
       <span class="cat-name">Capability</span>
-      <span class="cat-score">4/13</span>
-      <div class="cat-bar"><div class="cat-bar-fill" style="width:31%;background:#f85149"></div></div>
+      <span class="cat-score">3/13</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:23%;background:#f85149"></div></div>
     </div>
-    <div class="check pass">+ AGENTS.md / CLAUDE.md [4]</div>
-    <div class="check fail">- agents.json manifest [0/3]<span class="fix">No agents.json or .well-known/agent.json found.</span></div>
-    <div class="check fail">- OpenAPI spec [0/3]<span class="fix">No OpenAPI spec found. Add openapi.json or openapi.yaml.</span></div>
-    <div class="check fail">- Content negotiation [0/3]<span class="fix">No content negotiation setup. Consider serving markdown for Accept: text/markdown requests.</span></div>
+    <div class="check fail">- AGENTS.md / CLAUDE.md [0/4]<span class="fix">No agent instruction file (AGENTS.md, CLAUDE.md) detected.</span></div>
+    <div class="check fail">- agents.json manifest [1/3]<span class="fix">agents.json exists but is not valid JSON.</span></div>
+    <div class="check pass">+ OpenAPI spec [3]</div>
+    <div class="check fail">- Content negotiation [0/3]<span class="fix">No content negotiation detected. Serve markdown when Accept: text/markdown is requested.</span></div>
   </div>
   <div class="category">
     <div class="cat-header">
@@ -182,8 +179,8 @@ svg { display: block; margin: 16px 0; }
     </div>
     <div class="check pass">+ Machine-readable contact [3]</div>
     <div class="check pass">+ Programmatic pricing [3]</div>
-    <div class="check fail">- API endpoint [1/2]<span class="fix">API references found but no formal spec. Add OpenAPI spec.</span></div>
-    <div class="check pass">+ SDK / integration manifest [2]</div>
+    <div class="check pass">+ API endpoint [2]</div>
+    <div class="check fail">- SDK / integration manifest [1/2]<span class="fix">Integration mentions found but no install commands or SDK manifest.</span></div>
   </div>
 </div>
 <!-- /SECTION:agent-readiness-scorecard -->
@@ -192,18 +189,18 @@ svg { display: block; margin: 16px 0; }
 <div class="scorecard" id="ai-visibility">
   <div class="scorecard-header">
     <h3>AI Visibility</h3>
-    <span class="pct grade-c">28/50 (56%)</span>
+    <span class="pct grade-c">27/50 (54%)</span>
   </div>
   <div class="category">
     <div class="cat-header">
       <span class="cat-name">Structured Data</span>
-      <span class="cat-score">6/12</span>
-      <div class="cat-bar"><div class="cat-bar-fill" style="width:50%;background:#d29922"></div></div>
+      <span class="cat-score">12/12</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:100%;background:#3fb950"></div></div>
     </div>
-    <div class="check fail">- Schema.org markup [2/4]<span class="fix">Schema.org present but: type doesn't match site category, missing required fields.</span></div>
+    <div class="check pass">+ Schema.org markup [4]</div>
     <div class="check pass">+ FAQ markup [3]</div>
     <div class="check pass">+ Rich schemas (Breadcrumb/HowTo/Product) [3]</div>
-    <div class="check fail">- Open Graph + meta description [0/2]<span class="fix">No Open Graph or meta description tags. AI systems use these for page summaries.</span></div>
+    <div class="check pass">+ Open Graph + meta description [2]</div>
   </div>
   <div class="category">
     <div class="cat-header">
@@ -212,28 +209,28 @@ svg { display: block; margin: 16px 0; }
       <div class="cat-bar"><div class="cat-bar-fill" style="width:27%;background:#f85149"></div></div>
     </div>
     <div class="check fail">- Direct answer formatting [1/4]<span class="fix">Most pages don't lead with a concise summary (40-60 words). This is what AI systems cite.</span></div>
-    <div class="check fail">- Question-based headings [1/4]<span class="fix">Very few question-based headings. Rephrase key H2/H3s as questions users would ask AI.</span></div>
+    <div class="check fail">- Question-based headings [0/4]<span class="fix">No question-based headings. AI systems match user queries to headings — use &quot;What is X?&quot; / &quot;How to Y?&quot; format.</span></div>
     <div class="check pass">+ Citation-friendly structure [4]</div>
     <div class="check fail">- Definitive statements [2/3]<span class="fix">Some definitive statements but too much hedging. AI cites confident claims over uncertain ones.</span></div>
   </div>
   <div class="category">
     <div class="cat-header">
       <span class="cat-name">Authority</span>
-      <span class="cat-score">10/13</span>
-      <div class="cat-bar"><div class="cat-bar-fill" style="width:77%;background:#d29922"></div></div>
+      <span class="cat-score">6/13</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:46%;background:#f85149"></div></div>
     </div>
-    <div class="check pass">+ E-E-A-T signals [4]</div>
+    <div class="check fail">- E-E-A-T signals [3/4]<span class="fix">Has: author bio, experience signals, Person schema. Missing: credentials.</span></div>
     <div class="check pass">+ Entity optimization [3]</div>
     <div class="check pass">+ External validation & references [3]</div>
   </div>
   <div class="category">
     <div class="cat-header">
       <span class="cat-name">Freshness</span>
-      <span class="cat-score">8/10</span>
-      <div class="cat-bar"><div class="cat-bar-fill" style="width:80%;background:#3fb950"></div></div>
+      <span class="cat-score">5/10</span>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width:50%;background:#d29922"></div></div>
     </div>
-    <div class="check pass">+ Last modified dates [3]</div>
-    <div class="check fail">- Publication cadence [0/2]<span class="fix">Infrequent updates (~541 day gaps). Regular publishing signals authority to AI systems.</span></div>
+    <div class="check fail">- Last modified dates [2/3]<span class="fix">Add datePublished to structured data. AI systems prioritize fresh content.</span></div>
+    <div class="check fail">- Publication cadence [0/2]<span class="fix">Infrequent updates (~96 day gaps). Regular publishing signals authority to AI systems.</span></div>
     <div class="check pass">+ Content recency [3]</div>
     <div class="check pass">+ Evergreen content flagged [2]</div>
   </div>
@@ -254,12 +251,14 @@ svg { display: block; margin: 16px 0; }
 <line x1="40" y1="20" x2="680" y2="20" stroke="#21262d" stroke-width="1"/>
 <text x="32" y="24" text-anchor="end" fill="#8b949e" font-size="10">100</text>
 <text x="40" y="195" text-anchor="middle" fill="#8b949e" font-size="10">05-18</text>
+<text x="360" y="195" text-anchor="middle" fill="#8b949e" font-size="10">05-18</text>
 <text x="680" y="195" text-anchor="middle" fill="#8b949e" font-size="10">05-18</text>
-<path d="M 40.0 80.0 L 680.0 104.0" fill="none" stroke="#79c0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M 40.0 89.0 L 680.0 86.0" fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M 40.0 84.5 L 680.0 95.0" fill="none" stroke="#f0f6fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0 80.0 L 360.0 104.0 L 680.0 80.0" fill="none" stroke="#79c0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0 89.0 L 360.0 86.0 L 680.0 89.0" fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 40.0 84.5 L 360.0 95.0 L 680.0 84.5" fill="none" stroke="#f0f6fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="40.0" cy="84.5" r="3" fill="#f0f6fc"/>
-<circle cx="680.0" cy="95.0" r="3" fill="#f0f6fc"/>
+<circle cx="360.0" cy="95.0" r="3" fill="#f0f6fc"/>
+<circle cx="680.0" cy="84.5" r="3" fill="#f0f6fc"/>
 <text x="680" y="15" text-anchor="end" fill="#f0f6fc" font-size="10">Overall</text>
 <text x="600" y="15" text-anchor="end" fill="#79c0ff" font-size="10">Agent (x2)</text>
 <text x="500" y="15" text-anchor="end" fill="#d29922" font-size="10">Visibility (x2)</text>
@@ -270,6 +269,14 @@ svg { display: block; margin: 16px 0; }
 <h2 id="history">Scan History</h2>
 <table>
 <tr><th>Date</th><th>Score</th><th>Grade</th><th>Agent</th><th>Visibility</th><th>Delta</th></tr>
+<tr>
+  <td>2026-05-18</td>
+  <td>57/100</td>
+  <td class="grade-c">C</td>
+  <td>30/50</td>
+  <td>27/50</td>
+  <td><span class="trend">+7</span></td>
+</tr>
 <tr>
   <td>2026-05-18</td>
   <td>50/100</td>
@@ -290,48 +297,194 @@ svg { display: block; margin: 16px 0; }
 <!-- /SECTION:history-table -->
 
 <!-- SECTION:recommendations -->
-<h2 id="recommendations">Top Recommendations</h2>
-<p style="color:#8b949e;font-size:12px;margin-bottom:12px;">Sorted by point impact — fix these first.</p>
-<div class="rec">
-  <div class="rec-title">llms.txt</div>
-  <div class="rec-fix">No llms.txt found. Create one describing what your site does for AI agents.</div>
-  <div class="rec-impact">+4 points · Discovery</div>
-</div>
-<div class="rec">
-  <div class="rec-title">robots.txt AI crawlers</div>
-  <div class="rec-fix">No robots.txt found. Add one with explicit AI crawler rules.</div>
-  <div class="rec-impact">+3 points · Discovery</div>
-</div>
-<div class="rec">
-  <div class="rec-title">AI-friendly meta tags</div>
-  <div class="rec-fix">No HTML available to check meta tags.</div>
-  <div class="rec-impact">+3 points · Discovery</div>
-</div>
-<div class="rec">
-  <div class="rec-title">agents.json manifest</div>
-  <div class="rec-fix">No agents.json or .well-known/agent.json found.</div>
-  <div class="rec-impact">+3 points · Capability</div>
-</div>
-<div class="rec">
-  <div class="rec-title">OpenAPI spec</div>
-  <div class="rec-fix">No OpenAPI spec found. Add openapi.json or openapi.yaml.</div>
-  <div class="rec-impact">+3 points · Capability</div>
-</div>
-<div class="rec">
-  <div class="rec-title">Content negotiation</div>
-  <div class="rec-fix">No content negotiation setup. Consider serving markdown for Accept: text/markdown requests.</div>
-  <div class="rec-impact">+3 points · Capability</div>
-</div>
-<div class="rec">
-  <div class="rec-title">Direct answer formatting</div>
-  <div class="rec-fix">Most pages don't lead with a concise summary (40-60 words). This is what AI systems cite.</div>
-  <div class="rec-impact">+3 points · Citation Readiness</div>
-</div>
-<div class="rec">
-  <div class="rec-title">Question-based headings</div>
-  <div class="rec-fix">Very few question-based headings. Rephrase key H2/H3s as questions users would ask AI.</div>
-  <div class="rec-impact">+3 points · Citation Readiness</div>
-</div>
+<h2 id="recommendations">How To Fix It</h2>
+<p style="color:#8b949e;font-size:12px;margin-bottom:16px;">Sorted by point impact. Expand each for step-by-step instructions.</p>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">AGENTS.md / CLAUDE.md</div>
+      <div class="rec-fix">No agent instruction file (AGENTS.md, CLAUDE.md) detected.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+4 pts</span>
+      <div style="font-size:11px;color:#8b949e;">30 minutes</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="background:#3fb95010;border:1px solid #3fb95033;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#3fb950;">Run <code>npx aeo-ready scan --fix</code> to get a scaffold, then edit it.</div>
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">Create <code>AGENTS.md</code> in your repo root</li>
+      <li style="margin:4px 0;">Describe your project structure — key directories and what's in them</li>
+      <li style="margin:4px 0;">List development commands (install, run, test)</li>
+      <li style="margin:4px 0;">Note constraints: rate limits, auth requirements, external dependencies</li>
+      <li style="margin:4px 0;">Keep it factual and precise — LLM-generated AGENTS.md files hurt agent success rates</li>
+    </ol>
+  </div>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">Question-based headings</div>
+      <div class="rec-fix">No question-based headings. AI systems match user queries to headings — use &quot;What is X?&quot; / &quot;How to Y?&quot; format.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+4 pts</span>
+      <div style="font-size:11px;color:#8b949e;">1-2 hours</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">Find your top 10 pages by traffic or importance</li>
+      <li style="margin:4px 0;">Rewrite H2/H3 headings as questions users would ask AI</li>
+      <li style="margin:4px 0;">Example: change "Pricing" → "How much does [Product] cost?"</li>
+      <li style="margin:4px 0;">Example: change "Features" → "What can [Product] do?"</li>
+      <li style="margin:4px 0;">Aim for 30%+ of headings to be question-based</li>
+    </ol>
+  </div>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">Content negotiation</div>
+      <div class="rec-fix">No content negotiation detected. Serve markdown when Accept: text/markdown is requested.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+3 pts</span>
+      <div style="font-size:11px;color:#8b949e;">2-4 hours (requires code)</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">Add middleware that checks the <code>Accept</code> header on requests</li>
+      <li style="margin:4px 0;">When <code>Accept: text/markdown</code> is present, return markdown instead of HTML</li>
+      <li style="margin:4px 0;">Strip navigation, footers, and chrome — return just the content</li>
+      <li style="margin:4px 0;">This saves agents thousands of tokens vs parsing your HTML</li>
+    </ol>
+  </div>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">Direct answer formatting</div>
+      <div class="rec-fix">Most pages don't lead with a concise summary (40-60 words). This is what AI systems cite.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+3 pts</span>
+      <div style="font-size:11px;color:#8b949e;">1-2 hours</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">On each key page, add a 40-60 word summary as the first paragraph</li>
+      <li style="margin:4px 0;">This paragraph should directly answer the question the page addresses</li>
+      <li style="margin:4px 0;">Don't start with background or context — lead with the answer</li>
+      <li style="margin:4px 0;">AI systems extract this as the citation snippet</li>
+    </ol>
+    <div style="margin-top:12px;font-size:12px;color:#c9d1d9;"><strong>Example:</strong></div>
+    <pre style="background:#0d1117;border:1px solid #21262d;border-radius:4px;padding:12px;margin-top:6px;font-size:11px;color:#79c0ff;overflow-x:auto;white-space:pre-wrap;">&lt;!-- Before --&gt;
+&lt;h1&gt;Our Billing Platform&lt;/h1&gt;
+&lt;p&gt;Founded in 2020, we set out to solve...&lt;/p&gt;
+
+&lt;!-- After --&gt;
+&lt;h1&gt;Our Billing Platform&lt;/h1&gt;
+&lt;p&gt;Acme is a usage-based billing platform that helps SaaS companies meter API calls, automate invoicing, and recognize revenue. Plans start at $0/mo for up to $10K MRR.&lt;/p&gt;</pre>
+  </div>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">robots.txt AI crawlers</div>
+      <div class="rec-fix">Only 4/9 AI crawlers explicitly allowed.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+2 pts</span>
+      <div style="font-size:11px;color:#8b949e;">5 minutes</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="background:#3fb95010;border:1px solid #3fb95033;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#3fb950;">Run <code>npx aeo-ready scan --fix</code> to generate this automatically.</div>
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">Open your <code>robots.txt</code> file (or create one in your site root)</li>
+      <li style="margin:4px 0;">Add explicit Allow rules for each AI crawler</li>
+      <li style="margin:4px 0;">Deploy — most hosting platforms serve this automatically from root</li>
+    </ol>
+    <div style="margin-top:12px;font-size:12px;color:#c9d1d9;"><strong>Example:</strong></div>
+    <pre style="background:#0d1117;border:1px solid #21262d;border-radius:4px;padding:12px;margin-top:6px;font-size:11px;color:#79c0ff;overflow-x:auto;white-space:pre-wrap;">User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /</pre>
+  </div>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">Front-loading (first 500 tokens)</div>
+      <div class="rec-fix">Most pages don't answer what/why/how in first 500 tokens. Lead with the point.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+2 pts</span>
+      
+    </div>
+  </summary>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">Copy-for-AI affordances</div>
+      <div class="rec-fix">No copy-for-AI affordances. Add a &quot;Copy as Markdown&quot; button on doc pages.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+2 pts</span>
+      
+    </div>
+  </summary>
+</details>
+<details class="rec" style="cursor:pointer;">
+  <summary style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="rec-title">agents.json manifest</div>
+      <div class="rec-fix">agents.json exists but is not valid JSON.</div>
+    </div>
+    <div style="text-align:right;white-space:nowrap;">
+      <span class="rec-impact">+2 pts</span>
+      <div style="font-size:11px;color:#8b949e;">20 minutes</div>
+    </div>
+  </summary>
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;">
+    <div style="background:#3fb95010;border:1px solid #3fb95033;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#3fb950;">Run <code>npx aeo-ready scan --fix</code> to generate a draft.</div>
+    <div style="font-size:12px;color:#c9d1d9;"><strong>Steps:</strong></div>
+    <ol style="margin:8px 0 0 20px;font-size:12px;color:#8b949e;">
+      <li style="margin:4px 0;">Create <code>.well-known/agent.json</code> in your site root</li>
+      <li style="margin:4px 0;">Add name, description, and capabilities array</li>
+      <li style="margin:4px 0;">Link to your llms.txt and OpenAPI spec</li>
+      <li style="margin:4px 0;">Include contact info and auth method</li>
+    </ol>
+    <div style="margin-top:12px;font-size:12px;color:#c9d1d9;"><strong>Example:</strong></div>
+    <pre style="background:#0d1117;border:1px solid #21262d;border-radius:4px;padding:12px;margin-top:6px;font-size:11px;color:#79c0ff;overflow-x:auto;white-space:pre-wrap;">{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;name&quot;: &quot;Your Product&quot;,
+  &quot;description&quot;: &quot;What it does in one sentence&quot;,
+  &quot;capabilities&quot;: [&quot;api-integration&quot;, &quot;pricing-lookup&quot;],
+  &quot;interfaces&quot;: {
+    &quot;human&quot;: &quot;/&quot;,
+    &quot;llm&quot;: &quot;/llms.txt&quot;,
+    &quot;api&quot;: &quot;/openapi.json&quot;
+  }
+}</pre>
+  </div>
+</details>
 <!-- /SECTION:recommendations -->
 
 </main>

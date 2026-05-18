@@ -25,26 +25,26 @@ program
   .version(pkg.version);
 
 program
-  .command("scan")
+  .command("scan [url]")
   .description("Run a full audit (Agent Readiness + AI Visibility)")
-  .option("-u, --url <url>", "URL to audit (omit for current directory)")
+  .option("--fix", "Fix issues and show before/after")
+  .option("--track", "Query AI models to see what they say about you")
+  .option("--company <name>", "Company name for --track")
+  .option("--category <cat>", "Industry category for --track")
   .option("--json", "Output results as JSON")
   .option(
     "--threshold <number>",
     "Minimum score to pass (exit 1 if below)",
     parseInt,
   )
-  .option("--no-benchmark", "Skip agentic-seo benchmark comparison")
-  .option("--fix", "Generate missing files to fix issues")
-  .option("--track", "Query AI models to see what they say about you")
-  .option("--company <name>", "Company name for --track prompts")
-  .option("--category <cat>", "Industry category for --track prompts")
-  .action(async (opts) => {
+  .option("--no-benchmark", "Skip agentic-seo benchmark")
+  .action(async (url, opts) => {
     try {
-      const dir = opts.url ? null : process.cwd();
+      const isUrl = url && url.startsWith("http");
+      const dir = isUrl ? null : process.cwd();
       const quiet = opts.fix && dir;
       const result = await scan({
-        url: opts.url || null,
+        url: isUrl ? url : null,
         dir,
         json: opts.json || quiet,
         benchmark: quiet ? false : opts.benchmark !== false,

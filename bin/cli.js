@@ -40,6 +40,7 @@ program
   .option("--no-benchmark", "Skip agentic-seo benchmark")
   .action(async (url, opts) => {
     try {
+      if (url && !url.startsWith("http")) url = `https://${url}`;
       const isUrl = url && url.startsWith("http");
       const dir = isUrl ? null : process.cwd();
       const quiet = opts.fix && dir;

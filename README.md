@@ -8,7 +8,7 @@ npx aeo-ready scan yoursite.com
 
 ## What it does
 
-Runs every major AEO (Agentic Engine Optimization) benchmark against your URL in one command. Shows per-check results, company comparisons, and tracks scores over time.
+Runs every major AEO (Agentic Engine Optimization) benchmark against your site in one command. Shows per-check pass/fail, company comparisons, and tracks scores over time.
 
 ## Sources
 
@@ -18,6 +18,24 @@ Runs every major AEO (Agentic Engine Optimization) benchmark against your URL in
 | **Cloudflare** (isitagentready.com) | Discoverability, content accessibility, bot access, API/auth/MCP/A2A discovery, commerce | 19 |
 | **Fern** (afdocs) | llms.txt quality, markdown availability, page size, content structure, URL stability, auth | 23 |
 
+## Usage
+
+```bash
+npx aeo-ready scan yoursite.com                   # scan a URL (remote checks)
+npx aeo-ready scan yoursite.com --dir ./public    # full scan (local + remote)
+npx aeo-ready scan yoursite.com --json            # JSON output for CI
+npx aeo-ready scan yoursite.com --threshold 60    # exit 1 if below
+```
+
+### Why `--dir`?
+
+agentic-seo scores ~23/100 in URL-only mode because most checks (content structure, token economics, capability signaling, UX bridge) need filesystem access. Pass `--dir` to your build output or public directory to get the real score.
+
+```
+URL-only:  agentic-seo 23/100 (F)
+With --dir: agentic-seo 92/100 (A)
+```
+
 ## Output
 
 ```
@@ -25,37 +43,33 @@ Runs every major AEO (Agentic Engine Optimization) benchmark against your URL in
 
   ─── Benchmarks ────────────────────────────────────
 
-  ████░░░░░░░░░░░░ agentic-seo      23/100 (F)
-    + llms.txt, - content structure, - token economics...
+  ███████████████░ agentic-seo      92/100 (A)
+    ✓ Discovery              25/25
+    ◑ Content Structure      19/25
+    ✓ Token Economics        25/25
+    ✓ Capability Signaling   15/15
+    ✓ UX Bridge              8/10
     compare: Cloudflare 55 · Supabase 52 · Vercel 48
 
-  ████████████████ Cloudflare       5/5 (A)
+  █████████████░░░ Cloudflare       4/5 (B)
     + robotsTxt, + sitemap, + linkHeaders, + agentSkills...
     compare: Cloudflare 5 · Vercel 4 · Supabase 3
 
-  ████████████░░░░ Fern             72/100 (C)
-    + llms-txt-exists, - content-negotiation, - llms-txt-coverage...
+  █████████████░░░ Fern             83/100 (B)
+    + llms-txt-exists, + rendering-strategy, - content-negotiation...
     compare: Stripe 85 · Supabase 78 · Anthropic 72
 
-  Average across all sources: 45/100
+  Average across all sources: 85/100
 
   Fix it:
     npx agentic-seo init          scaffold llms.txt, AGENTS.md
-    Fern: 10 issues — run npx afdocs https://yoursite.com
-```
-
-## Usage
-
-```bash
-npx aeo-ready scan yoursite.com           # scan a URL
-npx aeo-ready scan yoursite.com --json    # JSON output for CI
-npx aeo-ready scan yoursite.com --threshold 60  # exit 1 if below
+    Fern: 6 issues — run npx afdocs https://yoursite.com
 ```
 
 ## CI Mode
 
 ```yaml
-- run: npx aeo-ready scan yoursite.com --threshold 50
+- run: npx aeo-ready scan yoursite.com --dir ./public --threshold 50
 ```
 
 ## Dashboard

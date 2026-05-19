@@ -1,4 +1,6 @@
 import chalk from "chalk";
+import { createInterface } from "readline";
+import { execSync } from "child_process";
 import { runAllBenchmarks, printBenchmarks } from "./benchmark/index.js";
 import { saveResult } from "./history/index.js";
 
@@ -29,6 +31,10 @@ export async function scan(opts) {
 
   const baseDir = process.cwd();
   await saveResult(result, baseDir);
+
+  if (!json && averageScore < 100 && process.stdin.isTTY) {
+    await promptFix(result, dir);
+  }
 
   return result;
 }
@@ -109,4 +115,50 @@ function printNextSteps(result) {
     }
     console.log("");
   }
+}
+
+function ask(question) {
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase());
+    });
+  });
+}
+
+async function promptFix(result, dir) {
+  const answer = await ask(chalk.bold("  Fix now? ") + chalk.dim("[y/N] "));
+  if (answer !== "y" && answer !== "yes") return;
+
+  console.log("");
+
+  const targetDir = dir || ".";
+
+  console.log(chalk.dim(`  Running: npx agentic-seo init ${targetDir}\n`));
+  try {
+    execSync(`npx agentic-seo init ${targetDir}`, {
+      stdio: "inherit",
+    });
+  } catch {
+    console.log(chalk.red("\n  agentic-seo init failed.\n"));
+  }
+
+  const fernFails =
+    result.benchmarks.fern?.checks?.filter(
+      (c) => c.status === "fail" || c.status === "warn",
+    ) || [];
+  if (fernFails.length > 0) {
+    console.log(chalk.dim(`\n  Running: npx afdocs ${result.url}\n`));
+    try {
+      execSync(`npx afdocs ${result.url}`, { stdio: "inherit" });
+    } catch {
+      console.log(chalk.red("\n  afdocs failed.\n"));
+    }
+  }
+
+  console.log(
+    chalk.dim("\n  Re-scan to verify: ") +
+      `npx aeo-ready scan ${result.url}${dir ? ` --dir ${dir}` : ""}\n`,
+  );
 }

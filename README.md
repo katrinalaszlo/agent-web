@@ -70,7 +70,11 @@ With --dir: agentic-seo 92/100 (A)
     npx agentic-seo init                          scaffold llms.txt, AGENTS.md
     npx afdocs https://yoursite.com               4 Fern issues
     npx skills add katrinalaszlo/agent-serve      make your product agent-ready
+
+  Fix now? [y/N]
 ```
+
+Say `y` and it runs `npx agentic-seo init` to scaffold missing files (llms.txt, AGENTS.md, skill.md), then `npx afdocs` for Fern issues. Non-interactive in CI (`--json` or non-TTY).
 
 ## CI Mode
 

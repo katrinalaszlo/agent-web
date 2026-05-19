@@ -86,6 +86,22 @@ Say `y` and it runs `npx agentic-seo init` to scaffold missing files (llms.txt, 
 
 Scores persist in `.aeo-ready/history.json`. Re-scan to track improvement over time.
 
+```bash
+npx aeo-ready history                          # show last 10 scans
+```
+
+## Programmatic API
+
+```js
+import { scan, getHistory } from "aeo-ready";
+
+const result = await scan({ url: "https://yoursite.com", dir: "./public", json: true });
+// result.averageScore, result.benchmarks.agenticSeo, .cloudflare, .fern
+
+const history = getHistory(process.cwd());
+// history.scans — array of past scan results
+```
+
 ## Next step: make your product agent-ready
 
 `aeo-ready` tells you how discoverable your site is to AI agents. To actually serve those agents — structured content, tool definitions, skill endpoints — use [agent-serve](https://github.com/katrinalaszlo/agent-serve):
@@ -93,6 +109,10 @@ Scores persist in `.aeo-ready/history.json`. Re-scan to track improvement over t
 ```bash
 npx skills add katrinalaszlo/agent-serve
 ```
+
+## Best practices by site type
+
+See [skills/agent-web/best-practices.md](skills/agent-web/best-practices.md) for an opinionated AEO framework covering SaaS, personal/portfolio, API/developer tools, and content/blog sites.
 
 ## Author
 

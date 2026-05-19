@@ -9,6 +9,7 @@ export async function scan(opts) {
 
   if (!json) {
     console.log(chalk.bold("\n  aeo-ready") + chalk.dim(` — ${url}\n`));
+    console.log(chalk.dim("  Checking agentic-seo · Cloudflare · Fern...\n"));
   }
 
   const benchmarks = await runAllBenchmarks(url, dir);
@@ -140,8 +141,8 @@ async function promptFix(result, dir) {
     execSync(`npx agentic-seo init ${targetDir}`, {
       stdio: "inherit",
     });
-  } catch {
-    console.log(chalk.red("\n  agentic-seo init failed.\n"));
+  } catch (err) {
+    console.log(chalk.red(`\n  agentic-seo init failed: ${err.message}\n`));
   }
 
   const fernFails =
@@ -152,8 +153,8 @@ async function promptFix(result, dir) {
     console.log(chalk.dim(`\n  Running: npx afdocs ${result.url}\n`));
     try {
       execSync(`npx afdocs ${result.url}`, { stdio: "inherit" });
-    } catch {
-      console.log(chalk.red("\n  afdocs failed.\n"));
+    } catch (err) {
+      console.log(chalk.red(`\n  afdocs failed: ${err.message}\n`));
     }
   }
 

@@ -29,7 +29,11 @@ export function loadHistory(historyPath) {
   if (existsSync(historyPath)) {
     try {
       return JSON.parse(readFileSync(historyPath, "utf8"));
-    } catch {}
+    } catch (err) {
+      console.warn(
+        `Warning: corrupt history file ${historyPath} — ${err.message}`,
+      );
+    }
   }
   return { scans: [] };
 }

@@ -1,5 +1,5 @@
 const DEFAULT_TIMEOUT = 10000;
-const USER_AGENT = "agent-web/1.0 (AI readiness auditor)";
+const USER_AGENT = "aeo-ready/1.3 (AEO benchmark aggregator)";
 
 export async function fetchUrl(url, opts = {}) {
   const controller = new AbortController();

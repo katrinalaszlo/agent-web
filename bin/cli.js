@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import { scan } from "../src/scan.js";
+import { getHistory } from "../src/history/index.js";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -59,6 +60,31 @@ program
       console.error(`Error: ${err.message}`);
       process.exit(1);
     }
+  });
+
+program
+  .command("history")
+  .description("Show past scan scores")
+  .action(() => {
+    const history = getHistory(process.cwd());
+    if (history.scans.length === 0) {
+      console.log("  No scans yet. Run: npx aeo-ready scan <url>");
+      return;
+    }
+    console.log("");
+    const rows = history.scans.slice(-10).map((s) => {
+      const date = new Date(s.timestamp).toLocaleDateString();
+      const parts = [];
+      if (s.agenticSeo != null) parts.push(`seo:${s.agenticSeo}`);
+      if (s.cloudflare != null)
+        parts.push(`cf:${s.cloudflare}/${s.cloudflareMax || "?"}`);
+      if (s.fern != null) parts.push(`fern:${s.fern}`);
+      return `  ${date.padEnd(12)} ${String(s.averageScore).padEnd(6)} ${parts.join("  ")}  ${s.url}`;
+    });
+    console.log(`  ${"Date".padEnd(12)} ${"Avg".padEnd(6)} Scores`);
+    console.log(`  ${"─".repeat(60)}`);
+    for (const row of rows) console.log(row);
+    console.log("");
   });
 
 program.parse();

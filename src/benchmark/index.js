@@ -27,6 +27,8 @@ const REFERENCE_SCORES = {
   },
 };
 
+const W = 52;
+
 export async function runAllBenchmarks(target, dir) {
   const isUrl = target && target.startsWith("http");
 
@@ -47,9 +49,7 @@ export function printBenchmarks(benchmarks) {
   const any = Object.values(benchmarks).some((b) => b && b.available);
   if (!any) return;
 
-  console.log(
-    chalk.bold("\n  ─── Benchmarks ────────────────────────────────────\n"),
-  );
+  console.log("");
 
   if (benchmarks.agenticSeo?.available) {
     printBenchmarkBlock("agentic-seo", "agenticSeo", benchmarks.agenticSeo);
@@ -62,30 +62,42 @@ export function printBenchmarks(benchmarks) {
   }
 }
 
+function scoreColor(pct) {
+  return pct >= 80 ? chalk.green : pct >= 50 ? chalk.yellow : chalk.red;
+}
+
 function printBenchmarkBlock(name, key, b) {
   const pct = b.maxScore > 0 ? Math.round((b.score / b.maxScore) * 100) : 0;
-  const color = pct >= 80 ? chalk.green : pct >= 50 ? chalk.yellow : chalk.red;
-  const barW = 16;
-  const filled = Math.round((pct / 100) * barW);
-  const bar = color("█".repeat(filled)) + chalk.dim("░".repeat(barW - filled));
+  const color = scoreColor(pct);
+  const scoreStr = `${b.score}/${b.maxScore}`;
+  const gradeStr = b.grade ? ` ${b.grade}` : "";
+  const right = `${scoreStr}${gradeStr}`;
+  const dots = W - name.length - right.length;
+  const leader = dots > 2 ? " " + chalk.dim("·".repeat(dots - 2)) + " " : " ";
 
-  console.log(
-    `  ${bar} ${chalk.bold(name.padEnd(16))} ${chalk.dim(`${b.score}/${b.maxScore}`)}${b.grade ? chalk.dim(` (${b.grade})`) : ""}`,
-  );
+  console.log(`  ${chalk.bold(name)}${leader}${color(right)}`);
 
   if (b.checks && b.checks.length > 0) {
-    for (const check of b.checks) {
-      if (check.status === "pass") {
-        console.log(
-          chalk.green(`    + ${check.id}`) +
-            chalk.dim(check.message ? ` ${check.message.slice(0, 60)}` : ""),
-        );
-      } else if (check.status === "fail") {
-        console.log(
-          chalk.red(`    - ${check.id}`) +
-            chalk.dim(check.message ? ` ${check.message.slice(0, 60)}` : ""),
-        );
-      }
+    const passed = b.checks.filter((c) => c.status === "pass");
+    const failed = b.checks.filter(
+      (c) => c.status === "fail" || c.status === "warn",
+    );
+
+    if (passed.length > 0 && failed.length > 0) {
+      console.log(
+        chalk.dim(
+          `    ${chalk.green(passed.length + " passed")}  ${chalk.red(failed.length + " failed")}`,
+        ),
+      );
+    } else if (passed.length > 0) {
+      console.log(chalk.dim(`    ${chalk.green(passed.length + " passed")}`));
+    }
+
+    for (const check of failed) {
+      const msg = check.message
+        ? chalk.dim(` ${check.message.slice(0, 50)}`)
+        : "";
+      console.log(`    ${chalk.red("✗")} ${check.id}${msg}`);
     }
   } else if (b.categories) {
     for (const [, cat] of Object.entries(b.categories)) {
@@ -99,20 +111,18 @@ function printBenchmarkBlock(name, key, b) {
             ? chalk.yellow("◑")
             : chalk.red("✗");
       console.log(
-        chalk.dim(
-          `    ${icon} ${(cat.name || "").padEnd(22)} ${cat.score}/${cat.maxScore}`,
-        ),
+        `    ${icon} ${chalk.dim((cat.name || "").padEnd(22))} ${chalk.dim(`${cat.score}/${cat.maxScore}`)}`,
       );
     }
   }
 
   const refs = REFERENCE_SCORES[key];
   if (refs) {
-    const names = Object.entries(refs)
+    const cmp = Object.entries(refs)
       .sort((a, b) => b[1] - a[1])
       .map(([n, s]) => `${n} ${s}`)
-      .join(chalk.dim(" · "));
-    console.log(chalk.dim(`    compare: ${names}`));
+      .join(" · ");
+    console.log(chalk.dim(`    vs ${cmp}`));
   }
 
   console.log("");

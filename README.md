@@ -15,7 +15,7 @@ Runs every major AEO (Agentic Engine Optimization) benchmark against your site i
 | Benchmark | What it checks | Checks |
 |-----------|---------------|--------|
 | **agentic-seo** (Addy Osmani) | Discovery, content structure, token economics, capability signaling, UX bridge | 10 |
-| **Cloudflare** (isitagentready.com) | Discoverability, content accessibility, bot access, API/auth/MCP/A2A discovery, commerce | 19 |
+| **Cloudflare** (isitagentready.com) | Discoverability, content accessibility, bot access, API/MCP/A2A discovery, commerce | 19 |
 | **Fern** (afdocs) | llms.txt quality, markdown availability, page size, content structure, URL stability, auth | 23 |
 
 ## Usage
@@ -39,31 +39,37 @@ With --dir: agentic-seo 92/100 (A)
 ## Output
 
 ```
-  aeo-ready — AEO benchmark aggregator
+  aeo-ready — yoursite.com
 
-  ─── Benchmarks ────────────────────────────────────
-
-  ███████████████░ agentic-seo      92/100 (A)
+  agentic-seo ·································· 91/100 A
     ✓ Discovery              25/25
-    ◑ Content Structure      19/25
+    ◑ Content Structure      18/25
     ✓ Token Economics        25/25
     ✓ Capability Signaling   15/15
-    ✓ UX Bridge              8/10
-    compare: Cloudflare 55 · Supabase 52 · Vercel 48
+    ✓ UX Bridge               8/10
+    vs Cloudflare 55 · Supabase 52 · Vercel 48 · Stripe 17
 
-  █████████████░░░ Cloudflare       4/5 (B)
-    + robotsTxt, + sitemap, + linkHeaders, + agentSkills...
-    compare: Cloudflare 5 · Vercel 4 · Supabase 3
+  Cloudflare ···································· 4/5 B
+    10 passed  2 failed
+    ✗ robotsTxtAiRules  No rules for AI bots found
+    ✗ contentSignals    No content signals in robots.txt
+    vs Cloudflare 5 · Vercel 4 · Supabase 3 · Stripe 2
 
-  █████████████░░░ Fern             83/100 (B)
-    + llms-txt-exists, + rendering-strategy, - content-negotiation...
-    compare: Stripe 85 · Supabase 78 · Anthropic 72
+  Fern ········································ 83/100 B
+    9 passed  4 failed
+    ✗ llms-txt-links-markdown  Links point to HTML, no markdown
+    ✗ content-start-position   2 pages have content past 50%
+    ✗ llms-txt-coverage        Covers 67% of sitemap
+    ✗ markdown-content-parity  4 pages have content differences
+    vs Stripe 85 · Supabase 78 · Anthropic 72 · Vercel 60
 
-  Average across all sources: 85/100
+  ──────────────────────────────────────────────────
+  Overall                                     85/100
 
-  Fix it:
-    npx agentic-seo init          scaffold llms.txt, AGENTS.md
-    Fern: 6 issues — run npx afdocs https://yoursite.com
+  Next steps
+    npx agentic-seo init                          scaffold llms.txt, AGENTS.md
+    npx afdocs https://yoursite.com               4 Fern issues
+    npx skills add katrinalaszlo/agent-serve      make your product agent-ready
 ```
 
 ## CI Mode
@@ -72,20 +78,17 @@ With --dir: agentic-seo 92/100 (A)
 - run: npx aeo-ready scan yoursite.com --dir ./public --threshold 50
 ```
 
-## Dashboard
-
-Each scan generates a self-contained HTML dashboard at `.aeo-ready/dashboard.html` with:
-- Score cards for each benchmark
-- Per-check detail (expandable)
-- Company comparisons
-- Score trends over time (inline SVG)
-- Scan history with deltas
-
-Auto-opens in browser after each scan.
-
 ## History
 
 Scores persist in `.aeo-ready/history.json`. Re-scan to track improvement over time.
+
+## Next step: make your product agent-ready
+
+`aeo-ready` tells you how discoverable your site is to AI agents. To actually serve those agents — structured content, tool definitions, skill endpoints — use [agent-serve](https://github.com/katrinalaszlo/agent-serve):
+
+```bash
+npx skills add katrinalaszlo/agent-serve
+```
 
 ## Author
 

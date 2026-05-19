@@ -1,17 +1,12 @@
 import chalk from "chalk";
 import { runAllBenchmarks, printBenchmarks } from "./benchmark/index.js";
 import { saveResult } from "./history/index.js";
-import { generateDashboard } from "./dashboard/generate.js";
-import { exec } from "child_process";
 
 export async function scan(opts) {
   const { url, dir, json } = opts;
 
   if (!json) {
-    console.log(
-      chalk.bold("\n  aeo-ready") + chalk.dim(" — AEO benchmark aggregator\n"),
-    );
-    console.log(chalk.dim(`  Scanning ${url}...\n`));
+    console.log(chalk.bold("\n  aeo-ready") + chalk.dim(` — ${url}\n`));
   }
 
   const benchmarks = await runAllBenchmarks(url, dir);
@@ -34,12 +29,6 @@ export async function scan(opts) {
 
   const baseDir = process.cwd();
   await saveResult(result, baseDir);
-
-  if (!json) {
-    const dashPath = await generateDashboard(result, baseDir);
-    console.log(chalk.dim(`  Dashboard: ${dashPath}\n`));
-    openInBrowser(dashPath);
-  }
 
   return result;
 }
@@ -73,50 +62,51 @@ function printReport(result) {
       : averageScore >= 50
         ? chalk.yellow
         : chalk.red;
+
+  console.log(chalk.dim("  " + "─".repeat(50)));
   console.log(
-    chalk.dim("  ─────────────────────────────────────────────────\n"),
-  );
-  console.log(
-    `  Average across all sources: ${gc.bold(`${averageScore}/100`)}\n`,
+    `  ${chalk.bold("Overall")}${" ".repeat(37)}${gc.bold(`${averageScore}/100`)}\n`,
   );
 
-  if (averageScore < 80) {
-    console.log(chalk.bold("  Fix it:\n"));
-    console.log(
-      chalk.dim("    npx agentic-seo init") +
-        "          scaffold llms.txt, AGENTS.md, skill.md",
-    );
-
-    const cfFails =
-      benchmarks.cloudflare?.checks?.filter((c) => c.status === "fail") || [];
-    for (const fail of cfFails.slice(0, 2)) {
-      console.log(
-        chalk.dim(`    Cloudflare: ${fail.id}`) +
-          chalk.dim(` — see isitagentready.com for fix`),
-      );
-    }
-
-    const fernFails =
-      benchmarks.fern?.checks?.filter(
-        (c) => c.status === "fail" || c.status === "warn",
-      ) || [];
-    if (fernFails.length > 0) {
-      console.log(
-        chalk.dim(`    Fern: ${fernFails.length} issues`) +
-          chalk.dim(` — run npx afdocs ${result.url}`),
-      );
-    }
-
-    console.log(chalk.dim("\n  Fix, then re-scan to track improvement.\n"));
-  }
+  printNextSteps(result);
 }
 
-function openInBrowser(filePath) {
-  const cmd =
-    process.platform === "darwin"
-      ? "open"
-      : process.platform === "win32"
-        ? "start"
-        : "xdg-open";
-  exec(`${cmd} "${filePath}"`, () => {});
+function printNextSteps(result) {
+  const { benchmarks, averageScore } = result;
+  const steps = [];
+
+  if (averageScore < 80) {
+    steps.push(["npx agentic-seo init", "scaffold llms.txt, AGENTS.md"]);
+  }
+
+  const cfFails =
+    benchmarks.cloudflare?.checks?.filter((c) => c.status === "fail") || [];
+  if (cfFails.length > 0) {
+    steps.push([
+      `Cloudflare: ${cfFails.length} failing`,
+      "see isitagentready.com",
+    ]);
+  }
+
+  const fernFails =
+    benchmarks.fern?.checks?.filter(
+      (c) => c.status === "fail" || c.status === "warn",
+    ) || [];
+  if (fernFails.length > 0) {
+    steps.push([`npx afdocs ${result.url}`, `${fernFails.length} Fern issues`]);
+  }
+
+  steps.push([
+    "npx skills add katrinalaszlo/agent-serve",
+    "make your product agent-ready",
+  ]);
+
+  if (steps.length > 0) {
+    console.log(chalk.bold("  Next steps\n"));
+    const maxCmd = Math.max(...steps.map(([cmd]) => cmd.length));
+    for (const [cmd, desc] of steps) {
+      console.log(`    ${cmd.padEnd(maxCmd + 4)}${chalk.dim(desc)}`);
+    }
+    console.log("");
+  }
 }

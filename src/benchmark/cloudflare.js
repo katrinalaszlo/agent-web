@@ -62,6 +62,9 @@ export async function runCloudflare(url) {
       available: true,
     };
   } catch (err) {
+    console.warn(
+      `Warning: Cloudflare benchmark failed for ${url}: ${err.message}`,
+    );
     return { available: false, reason: err.message?.slice(0, 100) };
   }
 }

@@ -1,4 +1,5 @@
 node_modules/
+.DS_Store
 .agent-web/
 .aeo-ready/
 *.tgz
@@ -7,3 +8,4 @@ node_modules/
 task_plan.md
 findings.md
 progress.md
+.gstack/

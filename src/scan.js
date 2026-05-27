@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { createInterface } from "readline";
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import { runAllBenchmarks, printBenchmarks } from "./benchmark/index.js";
 import { saveResult } from "./history/index.js";
 
@@ -100,7 +100,10 @@ function printNextSteps(result) {
       (c) => c.status === "fail" || c.status === "warn",
     ) || [];
   if (fernFails.length > 0) {
-    steps.push([`npx afdocs ${result.url}`, `${fernFails.length} Fern issues`]);
+    steps.push([
+      `npx afdocs check ${result.url}`,
+      `${fernFails.length} Fern issues`,
+    ]);
   }
 
   steps.push([
@@ -138,7 +141,7 @@ async function promptFix(result, dir) {
 
   console.log(chalk.dim(`  Running: npx agentic-seo init ${targetDir}\n`));
   try {
-    execSync(`npx agentic-seo init ${targetDir}`, {
+    execFileSync("npx", ["agentic-seo", "init", targetDir], {
       stdio: "inherit",
     });
   } catch (err) {
@@ -150,9 +153,11 @@ async function promptFix(result, dir) {
       (c) => c.status === "fail" || c.status === "warn",
     ) || [];
   if (fernFails.length > 0) {
-    console.log(chalk.dim(`\n  Running: npx afdocs ${result.url}\n`));
+    console.log(chalk.dim(`\n  Running: npx afdocs check ${result.url}\n`));
     try {
-      execSync(`npx afdocs ${result.url}`, { stdio: "inherit" });
+      execFileSync("npx", ["afdocs", "check", result.url], {
+        stdio: "inherit",
+      });
     } catch (err) {
       console.log(chalk.red(`\n  afdocs failed: ${err.message}\n`));
     }

@@ -37,7 +37,6 @@
     "bin/",
     "src/benchmark/",
     "src/history/",
-    "src/utils/",
     "src/index.js",
     "src/scan.js",
     "skills/",

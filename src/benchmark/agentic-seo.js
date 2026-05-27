@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from "fs";
 import { tmpdir } from "os";
 import { join, dirname } from "path";
@@ -21,7 +21,8 @@ async function fetchText(url) {
     const res = await fetch(url, { redirect: "follow" });
     if (!res.ok) return null;
     return await res.text();
-  } catch {
+  } catch (err) {
+    console.warn(`Warning: failed to fetch ${url}: ${err.message}`);
     return null;
   }
 }
@@ -102,7 +103,7 @@ export async function runBenchmark(target) {
       scanDir = target || ".";
     }
 
-    const output = execSync(`npx agentic-seo ${scanDir} --json`, {
+    const output = execFileSync("npx", ["agentic-seo", scanDir, "--json"], {
       timeout: 60000,
       encoding: "utf8",
       stdio: ["pipe", "pipe", "pipe"],
@@ -135,7 +136,11 @@ export async function runBenchmark(target) {
     if (tempDir) {
       try {
         rmSync(tempDir, { recursive: true, force: true });
-      } catch {}
+      } catch (cleanupErr) {
+        console.warn(
+          `Warning: failed to clean up temp dir ${tempDir}: ${cleanupErr.message}`,
+        );
+      }
     }
   }
 }
